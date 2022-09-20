@@ -1,5 +1,6 @@
 from functools import reduce
 import hashlib
+import math
 
 def index(array, n):
     return -1 if len(array) <= n or n < 0 else pow(array[n],n)
@@ -304,9 +305,46 @@ def hollow_triangle(n):
 def to_sha256(s):
     return hashlib.sha256(s.encode()).hexdigest()
 
+def alphanumeric(password):
+    return password != "" and len(list(filter(lambda x: not x.isnumeric() and not x.isalpha(),[char for char in password]))) == 0
+
+def commas(num):
+    num = f'{num:.3f}'
+    return f'{float(num):,}' if f'{float(num):,}'[-1] != "0" else f'{float(num):,}'[:-2]
+
+def unique_in_order(iterable):
+    result = []
+    prev = None
+    for char in iterable[:]:
+        if char != prev:
+            result.append(char)
+            prev = char
+    return result
+
+def nbr_of_laps(x, y):
+    return (math.lcm(x,y)//x, math.lcm(x,y)//y)
+
+def number_of_routes(m, n):
+    return choose(m+n,n)
+
+def is_pangram(s):
+    for i in range(1,27) :
+        if chr(i+96) not in s.lower() :
+            return False
+    return True
+
+def order(sentence):
+    if sentence == "" :return ""
+    arr=sentence.split(" ")
+    dir = {}
+    for item in arr :
+        index = [i for i in item if i.isnumeric()][0]
+        dir[index] =item
+    return " ".join(list(map(lambda x:dir[str(x)],[i for i in range(1,len(dir)+1)])))
+
+
 def main():
     print()
-
 
 
 if __name__ == "__main__":
