@@ -342,10 +342,27 @@ def order(sentence):
         dir[index] =item
     return " ".join(list(map(lambda x:dir[str(x)],[i for i in range(1,len(dir)+1)])))
 
+def solution(*args):
+    return len(list(args)) != len(set(args)) if args is not None else False
+
+def get_w(height):
+    if height < 2 : return []
+    result = ["*"+" "*(2*(height-1)-1)+"*"+" "*(2*(height-1)-1)+"*"]
+    for i in range(1,height-1) :
+        result.append(" "*i+"*"+" "*(2*(height-i-1)-1)+"*"+" "*(2*i-1)+"*"+" "*(2*(height-i-1)-1)+"*"+" "*i)
+    result.append(" "*(height-1)+"*"+" "*(2*(height-1)-1)+"*"+" "*(height-1))
+    return result
+
+def delete_nth(order,max_e):
+    result = []
+    for i in order :
+        if result.count(i) < max_e :
+            result.append(i)
+    return result
+
 
 def main():
-    print()
-
+    pass
 
 if __name__ == "__main__":
     main()
