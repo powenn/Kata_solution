@@ -360,9 +360,66 @@ def delete_nth(order,max_e):
             result.append(i)
     return result
 
+def Xbonacci(signature,n):
+    if n <= len(signature) : return signature[:n]
+    for i in range(0,n-len(signature)) :
+        signature.append(sum(signature[i:i+len(signature)]))
+    return signature
+
+def twos_difference(lst): 
+    result = []
+    for num in sorted(lst) :
+        if lst.count(num+2) > 0 :
+            result.append((num,num+2))
+    return result
+
+def f(n):
+    return 1 if n == 0 else (n - m(f(n - 1)))
+
+def m(n):
+    return 0 if n == 0 else (n - f(m(n - 1)))
+
+def move_zeros(lst):
+    return list([i for i in lst if i != 0])+[0 for _ in range(0,lst.count(0))]
+
+def word_to_char_count_dir(word):
+    word_dir = {}
+    for char in set(word[0:]) :
+        word_dir[char] = word.count(char)
+    return word_dir
+
+def anagrams(word, words):
+    return list(filter(lambda x:word_to_char_count_dir(x)==word_to_char_count_dir(word),words))
+
+def beeramid(bonus, price):
+    if bonus<=0 :return 0
+    index = 1 ; total = 0
+    while total <= bonus :
+        total+=price*int(pow(index,2))
+        index+=1
+    return index-2
+
+def solution(array_a, array_b):
+    return sum(list(map(lambda x:pow(abs(array_a[x]-array_b[x]),2),(i for i in range(0,len(array_a)))))) / len(array_a)
+
+def valid_ISBN10(isbn): 
+    if len([i for i in isbn[:8] if i.isnumeric()==False])>0 or len(isbn)!=10:return False
+    total = 0
+    for i in range(1,10):
+        total+=int(isbn[i-1])*i
+    if isbn[-1] == "X" :
+        total+= 100
+    if isbn[-1].isnumeric() == True :
+        total+=int(isbn[-1])*10
+    print(total)
+    return total%11==0
+
+def lcm(*args):
+    return reduce(lambda a,b:math.lcm(a,b),list(args)) if args != () else 1
 
 def main():
     pass
+
 
 if __name__ == "__main__":
     main()
