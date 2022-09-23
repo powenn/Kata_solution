@@ -417,9 +417,30 @@ def valid_ISBN10(isbn):
 def lcm(*args):
     return reduce(lambda a,b:math.lcm(a,b),list(args)) if args != () else 1
 
-def main():
-    pass
+def count_nines(n):
+    return sum(list(map(lambda x:str(x).count("9"),(range(0,n+1)))))
 
+def ipv4_to_binary(ipv4_addr: str) -> str:
+    return '.'.join(list(map(lambda x:bin(int(x))[2:].zfill(8),ipv4_addr.split("."))))
+
+def dot(n,m):
+    line = "+---+"+(n-1)*"---+"
+    dot = "| o |"+(n-1)*" o |"
+    result =[]
+    for i in range(0,m):
+        result.append(line)
+        result.append(dot)
+    result.append(line)
+    return "\n".join(result)
+
+def count_odd_pentaFib(n):
+    arr=[0,1,1,2,4]
+    while len(arr)<=n:
+        arr.append(sum(arr[len(arr)-5:]))
+    return len(set(list(filter(lambda x:x%2!=0,arr)))) if n!=0 else 0
+
+def main():
+    print()
 
 if __name__ == "__main__":
     main()
