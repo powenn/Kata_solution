@@ -2,9 +2,6 @@ import java.util.*;
 import java.util.stream.*;
 
 public class Kata {
-    static Object[] haystack1 = { "3", "123124234", null, "needle", "world", "hay", 2, "3", true, false };
-    static String s1 = "LovePizza";
-
     public static Double multiply(Double a, Double b) {
         return a * b;
     }
@@ -276,56 +273,237 @@ public class Kata {
         return true;
     }
 
-
     public static String highAndLow(String numbers) {
-        List<Integer> num_list = Arrays.stream(numbers.split(" ")).map(x->Integer.parseInt(x)).toList();
-        return Collections.max(num_list)+" "+Collections.min(num_list);
+        List<Integer> num_list = Arrays.stream(numbers.split(" ")).map(x -> Integer.parseInt(x)).toList();
+        return Collections.max(num_list) + " " + Collections.min(num_list);
     }
-    public static String greet(String name){
-        return "Hello "+name.substring(0, 1).toUpperCase()+name.substring(1).toLowerCase()+"!";
+
+    public static String greet(String name) {
+        return "Hello " + name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase() + "!";
     }
 
     public static int compute(int x, int y) {
-        int d = 1 ;
-        for (int i=d;i<Math.max(x, y);i++) {
-            if (x%i==0&&y%i==0) {
-                d=i;
+        int d = 1;
+        for (int i = d; i < Math.max(x, y); i++) {
+            if (x % i == 0 && y % i == 0) {
+                d = i;
             }
         }
         return d;
     }
 
     public static int sumTriangularNumbers(int n) {
-        if (n<=0) {return 0;}
-        int [] arr = new int[n] ;
-        int tmp ;
-        for (int i=0;i<n;i++) {
-            tmp =  IntStream.rangeClosed(1, i+1).sum();
+        if (n <= 0) {
+            return 0;
+        }
+        int[] arr = new int[n];
+        int tmp;
+        for (int i = 0; i < n; i++) {
+            tmp = IntStream.rangeClosed(1, i + 1).sum();
             arr[i] = tmp;
         }
         return Arrays.stream(arr).sum();
     }
 
     public static String explode(String digits) {
-        String result = "" ;
-        char[] arr  = digits.toCharArray() ;
-        for (char c:arr) {
-            result+=String.valueOf(c).repeat(Integer.parseInt(String.valueOf(c)));
+        String result = "";
+        char[] arr = digits.toCharArray();
+        for (char c : arr) {
+            result += String.valueOf(c).repeat(Integer.parseInt(String.valueOf(c)));
         }
         return result;
     }
+
     public static int halvingSum(int n) {
-        int index = 1 ;
+        int index = 1;
         int sum = 0;
-        while (n/index > 0) {
-            System.out.println(n/index);
-            sum+=n/index;
-            index*=2;
+        while (n / index > 0) {
+            System.out.println(n / index);
+            sum += n / index;
+            index *= 2;
         }
         return sum;
     }
 
+    public static int solution(int number) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        for (int i = 1; i < number; i++) {
+            if (i % 3 == 0 || i % 5 == 0) {
+                result.add(i);
+            }
+        }
+        return result.stream().mapToInt(a -> a).sum();
+    }
+
+    public static int[] generateIntegers(int n) {
+        return IntStream.rangeClosed(0, n).toArray();
+    }
+
+    public static String getMiddle(String word) {
+        return word.length() % 2 == 0 ? word.substring((int) (word.length()) / 2 - 1, (int) (word.length()) / 2 + 1)
+                : String.valueOf(word.charAt((int) (word.length() - 1) / 2));
+    }
+
+    public static boolean isSquare(int n) {
+        return n < 0 ? false : Math.sqrt(n) - (int) Math.sqrt(n) == 0;
+    }
+
+    public static int GetSum(int a, int b) {
+        return Arrays.stream(IntStream.rangeClosed(Math.min(a, b), Math.max(a, b)).toArray()).sum();
+    }
+
+    public static String pofi(int n) {
+        switch (n % 4) {
+            case 0:
+                return String.valueOf(1);
+            case 1:
+                return "i";
+            case 2:
+                return String.valueOf(-1);
+        }
+        return "-i";
+    }
+
+    public static String whoLikesIt(String... names) {
+        if (names.length == 0) {
+            return "no one likes this";
+        } else if (names.length == 1) {
+            return names[0] + " likes this";
+        } else if (names.length == 2) {
+            return names[0] + " and " + names[1] + " like this";
+        } else if (names.length == 3) {
+            return names[0] + ", " + names[1] + " and " + names[2] + " like this";
+        } else if (names.length >= 4) {
+            return names[0] + ", " + names[1] + " and " + (names.length - 2) + " others like this";
+        } else {
+            return "";
+        }
+    }
+
+    public static int digital_root(int n) {
+        while (String.valueOf(n).length() > 1) {
+            n = Arrays.stream(String.valueOf(n).split("")).mapToInt(e -> Integer.parseInt(e)).sum();
+        }
+        return n;
+    }
+
+    public static List<Integer> notPrimes(int a, int b) {
+        int[] arr = IntStream.rangeClosed(a, b - 1).toArray();
+        arr = Arrays.stream(arr)
+                .filter(n -> isPrime(n) == false && String.valueOf(n).contains("1") == false
+                        && String.valueOf(n).contains("4") == false && String.valueOf(n).contains("6") == false
+                        && String.valueOf(n).contains("8") == false && String.valueOf(n).contains("9") == false
+                        && String.valueOf(n).contains("0") == false)
+                .toArray();
+        return Arrays.stream(arr).boxed().toList();
+    }
+
+    public static int countBits(int n) {
+        return Collections.frequency(Arrays.asList(Integer.toBinaryString(n).split("")), "1");
+    }
+
+    public static long fib(int n) {
+        if (n == 0) {
+            return 0;
+        }
+        if (n == 1 || n == 2) {
+            return 1;
+        }
+        return fib(n - 2) + fib(n - 1);
+    }
+
+    public static String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
+    public static String createPhoneNumber(int[] numbers) {
+        return String.format("(%s) %s-%s",
+                String.join("", Arrays.stream(numbers).mapToObj(e -> String.valueOf(e)).toList().subList(0, 3)),
+                String.join("", Arrays.stream(numbers).mapToObj(e -> String.valueOf(e)).toList().subList(3, 6)),
+                String.join("", Arrays.stream(numbers).mapToObj(e -> String.valueOf(e)).toList().subList(6, 10)));
+    }
+
+    public static int findIt(int[] a) {
+        Set<Integer> a_set = Arrays.stream(a).boxed().collect(Collectors.toSet());
+        return a_set.stream().filter(e -> Arrays.stream(a).filter(x -> x == e).count() % 2 != 0).findFirst().get();
+    }
+
+    public static boolean isIsogram(String str) {
+        return Arrays.stream(str.toLowerCase().split("")).collect(Collectors.toSet()).size() == str.length()
+                || str.isEmpty();
+    }
+
+    public static int findShort(String s) {
+        return Arrays.stream(s.split(" ")).mapToInt(e -> e.length()).min().getAsInt();
+    }
+
+    public static long sumMul(int n, int m) {
+        if (n <= 0 || m <= 0) {
+            throw new IllegalArgumentException();
+        }
+        return IntStream.rangeClosed(n, m - 1).filter(e -> e % n == 0).sum();
+    }
+
+    public static int countSheeps(Boolean[] arrayOfSheeps) {
+        return (int) Arrays.stream(arrayOfSheeps).filter(e -> String.valueOf(e).equals("true")).count();
+    }
+
+    public static int[] digitize(long n) {
+        var new_n = new ArrayList<>(
+                Arrays.stream(String.valueOf(n).split("")).mapToInt(e -> Integer.parseInt(e)).boxed().toList());
+        Collections.reverse(new_n);
+        return new_n.stream().mapToInt(e -> (int) e).toArray();
+    }
+
+    public static int predictAge(int... ages) {
+        return (int) Math.sqrt(IntStream.rangeClosed(0, 7).mapToDouble(e -> Math.pow(ages[e], 2)).sum()) / 2;
+    }
+
+    public static String makeReadable(int seconds) {
+        return String.format("%02d:%02d:%02d", seconds / 60 / 60, seconds / 60 % 60, seconds % 60);
+    }
+
+    public static int sum(List<?> mixed) {
+        return mixed.stream().mapToInt(e -> Integer.parseInt(String.valueOf(e))).sum();
+    }
+
+    public static String formatDuration(int seconds) {
+        LinkedHashMap<String, Integer> time_map = new LinkedHashMap<>();
+        time_map.put("year", seconds / 60 / 60 / 24 / 365);
+        time_map.put("day", seconds / 60 / 60 / 24 % 365);
+        time_map.put("hour", seconds / 60 / 60 % 24);
+        time_map.put("minute", seconds / 60 % 60);
+        time_map.put("second", seconds % 60);
+        var time_list = time_map.entrySet().stream().filter(e -> e.getValue() > 0).toList();
+        if (time_list.size() == 0) {
+            return "now";
+        }
+        if (time_list.size() <= 1) {
+            return String.format("%d %s%s", time_list.get(0).getValue(), time_list.get(0).getKey(),
+                    time_list.get(0).getValue() > 1 ? "s" : "");
+        } else if (time_list.size() <= 2) {
+            return String.format("%d %s%s and %d %s%s", time_list.get(0).getValue(), time_list.get(0).getKey(),
+                    time_list.get(0).getValue() > 1 ? "s" : "", time_list.get(1).getValue(), time_list.get(1).getKey(),
+                    time_list.get(1).getValue() > 1 ? "s" : "");
+        } else {
+            return String.join(", ", IntStream.rangeClosed(0, time_list.size() - 2)
+                    .mapToObj(e -> String.format("%d %s%s", time_list.get(e).getValue(), time_list.get(e).getKey(),
+                            time_list.get(e).getValue() > 1 ? "s" : ""))
+                    .toList())
+                    + String.format(" and %d %s%s", time_list.get(time_list.size() - 1).getValue(),
+                            time_list.get(time_list.size() - 1).getKey(),
+                            time_list.get(time_list.size() - 1).getValue() > 1 ? "s" : "");
+        }
+    }
+
+    public static double squareArea(double A) {
+        return (int) (Math.pow(4 * A / Math.PI / 2, 2) * 100) / 100.0;
+    }
 
     public static void main(String[] args) {
+        System.out.println(squareArea(2));
     }
 }
