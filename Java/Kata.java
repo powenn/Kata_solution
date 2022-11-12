@@ -1,5 +1,6 @@
 import java.util.*;
 import java.util.stream.*;
+import java.util.regex.*;
 
 public class Kata {
     public static Double multiply(Double a, Double b) {
@@ -416,7 +417,7 @@ public class Kata {
         if (str == null || str.isEmpty()) {
             return str;
         }
-        return str.substring(0, 1).toUpperCase() + str.substring(1);
+        return str.substring(0, 1).toUpperCase() + str.substring(1).toLowerCase();
     }
 
     public static String createPhoneNumber(int[] numbers) {
@@ -499,11 +500,168 @@ public class Kata {
         }
     }
 
+    public static int zeros(int n) {
+        int count = 0;
+        while (n >= 5) {
+            count += n /= 5;
+        }
+        return count;
+    }
+
     public static double squareArea(double A) {
         return (int) (Math.pow(4 * A / Math.PI / 2, 2) * 100) / 100.0;
     }
 
+    public static boolean scramble(String str1, String str2) {
+        var str1_map = new HashMap<String, Integer>() {
+        };
+        var str2_map = new HashMap<String, Integer>() {
+        };
+        for (String s : new HashSet<>(Arrays.stream(str1.split("")).toList())) {
+            str1_map.put(s, (int) Arrays.stream(str1.split("")).filter(e -> e.equals(s)).count());
+        }
+        for (String s : new HashSet<>(Arrays.stream(str2.split("")).toList())) {
+            str2_map.put(s, (int) Arrays.stream(str2.split("")).filter(e -> e.equals(s)).count());
+        }
+        for (var key : str2_map.keySet()) {
+            if (!str1_map.containsKey(key) || str1_map.get(key) < str2_map.get(key)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static String correct(String string) {
+        return string.replace('5', 'S').replace('0', 'O').replace('1', 'I');
+    }
+
+    public static String leftPad(String s, int length) {
+        if (s.length() >= length)
+            return s;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length - s.length(); i++)
+            sb.append("0");
+        return sb.toString() + s;
+    }
+
+    public static String sumStrings(String a, String b) {
+        int i = a.length();
+        int j = b.length();
+        int k = Math.max(i, j) + 1;
+        char[] c = new char[k];
+        for (int digit = 0; k > 0; digit /= 10) {
+            if (i > 0)
+                digit += a.charAt(--i) - '0';
+            if (j > 0)
+                digit += b.charAt(--j) - '0';
+            c[--k] = (char) ('0' + digit % 10);
+        }
+        for (k = 0; k < c.length - 1 && c[k] == '0'; k++) {
+            /* Skip leading zeroes */}
+        return new String(c, k, c.length - k);
+    }
+
+    public static String getDay(int n) {
+        try {
+            return capitalize(java.time.DayOfWeek.of(n <= 7 && n >= 1 ? n - 1 == 0 ? 7 : n - 1 : n).name());
+        } catch (Exception e) {
+            return "Wrong, please enter a number between 1 and 7";
+        }
+    }
+
+    public static boolean validPhoneNumber(String phoneNumber) {
+        return Pattern.compile("\\(\\d{3}\\)\\ \\d{3}-\\d{4}").matcher(phoneNumber).matches();
+    }
+
+    public static long ipsBetween(String start, String end) {
+        var start_arr = Arrays.stream(start.split("[.]")).mapToInt(e -> Integer.parseInt(e)).toArray();
+        var end_arr = Arrays.stream(end.split("[.]")).mapToInt(e -> Integer.parseInt(e)).toArray();
+        long result = (end_arr[0] - start_arr[0]) * (256 * 256 * 256) + (end_arr[1] - start_arr[1]) * (256 * 256)
+                + (end_arr[2] - start_arr[2]) * (256) + (end_arr[3] - start_arr[3]);
+        return result == -1 ? (1l << 32l) - 1l : result;
+    }
+
+    public static String cleanString(String s) {
+        var s_list = new LinkedList<>();
+        for (char c : s.toCharArray()) {
+            if (c != '#') {
+                s_list.add(c);
+            }
+            if (s_list.size() > 0 && c == '#') {
+                s_list.removeLast();
+            }
+        }
+        return String.join("", s_list.stream().map(e -> String.valueOf(e)).toList());
+    }
+
+    public static boolean validParentheses(String parens) {
+        var paren_list = new LinkedList<String>();
+        for (char c : parens.toCharArray()) {
+            if (c == '(') {
+                paren_list.add(String.valueOf(c));
+            } else if (c == ')') {
+                if (paren_list.size() != 0) {
+                    paren_list.removeLast();
+                } else {
+                    return false;
+                }
+            }
+        }
+        return paren_list.size() == 0;
+    }
+
+    public static int[] hexStringToRGB(String hex) {
+        var R = Integer.parseInt(hex.substring(1).substring(0, 2), 16);
+        var G = Integer.parseInt(hex.substring(1).substring(2, 4), 16);
+        var B = Integer.parseInt(hex.substring(1).substring(4, 6), 16);
+        System.out.println(Arrays.toString(new int[] { R, G, B }));
+        return new int[] { R, G, B };
+    }
+
+    public static int factDigits(int n) {
+        double d = 0;
+        for (int i = 2; i <= n; i++) {
+            d += Math.log10(i);
+        }
+        return (int) (Math.floor(d) + 1);
+    }
+
+    public static String pigIt(String str) {
+        return String.join(" ", Arrays.stream(str.split(" ")).map(e -> {
+            if (Character.isLetter(e.charAt(0))) {
+                return e.substring(1) + e.charAt(0) + "ay";
+            }
+            return e;
+        }).toList());
+    }
+
+    public static long sumOfDiv(long num) {
+        List<Integer> factors = new ArrayList<Integer>();
+        for (int i = 1; i <= num / i; ++i) {
+            if (num % i == 0) {
+                factors.add(i);
+                if (i != 1) {
+                    factors.add((int) num / i);
+                }
+            }
+        }
+        // Collections.sort(factors);
+        // System.out.println(factors);
+        return factors.stream().mapToLong(e -> e).sum();
+    }
+
+    public static String buddy(long start, long limit) {
+        for (long i = start; i <= limit; i++) {
+            System.out.println(Arrays.toString(new long[] { sumOfDiv(sumOfDiv(i) - 1), i + 1 }));
+            if (sumOfDiv(sumOfDiv(i) - 1) == i + 1) {
+                return String.format("(%s %s)", i, sumOfDiv(i) - 1);
+            }
+        }
+        return "Nothing";
+    }
+
+
     public static void main(String[] args) {
-        System.out.println(squareArea(2));
+        System.out.println();
     }
 }
