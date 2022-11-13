@@ -2,6 +2,7 @@ from functools import reduce
 import hashlib
 import math
 from math import factorial
+from random import randint
 
 
 def index(array, n):
@@ -436,8 +437,8 @@ def order(sentence):
     return " ".join(list(map(lambda x: dir[str(x)], [i for i in range(1, len(dir)+1)])))
 
 
-def solution(*args):
-    return len(list(args)) != len(set(args)) if args is not None else False
+# def solution(*args):
+#     return len(list(args)) != len(set(args)) if args is not None else False
 
 
 def get_w(height):
@@ -509,8 +510,8 @@ def beeramid(bonus, price):
     return index-2
 
 
-def solution(array_a, array_b):
-    return sum(list(map(lambda x: pow(abs(array_a[x]-array_b[x]), 2), (i for i in range(0, len(array_a)))))) / len(array_a)
+# def solution(array_a, array_b):
+#     return sum(list(map(lambda x: pow(abs(array_a[x]-array_b[x]), 2), (i for i in range(0, len(array_a)))))) / len(array_a)
 
 
 def valid_ISBN10(isbn):
@@ -610,6 +611,7 @@ def find_e(s):
 def group_by_commas(n):
     return f"{n:,}"
 
+
 def pascals_triangle(n):
     arr = []
     for i in range(n):
@@ -617,23 +619,130 @@ def pascals_triangle(n):
             arr.append(factorial(i)//(factorial(j)*factorial(i-j)))
     return arr
 
+
 def fib(n):
     a, b = 0, 1
     for _ in range(n-1):
         a, b = b, a+b
     return a
 
+
 def getROT13char(c):
-    if c.islower() :
+    if c.islower():
         return chr(ord(c)+13) if ord(c)+13 <= 122 else chr(ord(c)-13)
-    else :
+    else:
         return chr(ord(c)+13) if ord(c)+13 <= 90 else chr(ord(c)-13)
 
+
 def rot13(message):
-    return "".join(list(map(lambda x:getROT13char(x) if x.isalpha() else x ,message)))
+    return "".join(list(map(lambda x: getROT13char(x) if x.isalpha() else x, message)))
+
+
+def solution(number):
+    return sum(list(filter(lambda x: x % 3 == 0 or x % 5 == 0, range(3, number))))
+
+
+def find_it(seq):
+    return list(set(filter(lambda x: seq.count(x) % 2 != 0, seq)))[0]
+
+
+def nearest_sq(n):
+    return int(math.pow(int(math.sqrt(n))+1, 2)) if math.sqrt(n) - int(math.sqrt(n)) >= 0.5 else int(math.pow(int(math.sqrt(n)), 2))
+
+
+def digital_root(n):
+    while len(str(n)) > 1:
+        n = sum(list(map(lambda x: int(x), str(n))))
+    return n
+
+
+def count_smileys(arr):
+    return len(list(filter(lambda x: x in [":)", ":D", ";-D", ":~)", ";~D", ":-)", ":-D", ":~D", ";D"], arr)))
+
+
+def to_weird_case(words):
+    words_list = words.split(" ")
+    result_list = []
+    for word in words_list:
+        result = ""
+        for i in range(len(word)):
+            result += word[i].upper() if i % 2 == 0 else word[i].lower()
+        result_list.append(result)
+    return " ".join(result_list)
+
+
+def highest_rank(arr):
+    num_dict = dict()
+    result = 0
+    for num in set(arr):
+        num_dict[num] = arr.count(num)
+    for num in num_dict.keys():
+        if num_dict[num] == max(num_dict.values()):
+            if num > result:
+                result = num
+    return result
+
+
+def prefill(n, v=None):
+    try:
+        return [v for _ in range(int(n))]
+    except:
+        print(f"{n} is invalid")
+
+
+def derive(coefficient, exponent):
+    return f"{coefficient*exponent}x^{exponent-1}"
+
+
+def decipher_this(string):
+    string_list = []
+    for s in string.split(" "):
+        result = ""
+        letters = list(filter(lambda y: y.isalpha(), s))
+        if len(letters) > 1:
+            letters[0], letters[len(
+                letters)-1] = letters[len(letters)-1], letters[0]
+        letters_part = "".join(list(filter(lambda y: y.isalpha(), letters)))
+        result += chr(int("".join(list(filter(lambda y: y.isnumeric(), s)))))+letters_part
+        string_list.append(result)
+    return " ".join(string_list)
+
+
+def is_int_array(arr):
+    if arr == None:
+        return False
+    if arr == "":
+        return False
+    if len(arr) == 0:
+        return True
+    for item in arr:
+        print(item)
+        if item == None:
+            return False
+        if type(item) is float and int(item) != item:
+            return False
+        if type(item) is str:
+            return False
+    return True
+
+
+def first_non_repeating_letter(string):
+    for s in string:
+        if string.count(s.lower())+string.count(s.upper()) == 1 if s.isalpha() else string.count(s) == 1:
+            return s
+    return ""
+
+
+def generate_hashtag(s):
+    if s == "":
+        return False
+    s_list = list(map(lambda t: t.capitalize(),
+                  filter(lambda x: x != "", s.split(" "))))
+    return "#"+"".join(s_list) if len("".join(s_list)) < 140 else False
 
 def main():
-    print(rot13('aA bB zZ 1234 *!?%'))
+    print(generate_hashtag('codewars  is  nice'))
+
 
 if __name__ == "__main__":
     main()
