@@ -1,8 +1,9 @@
+import codecs
 from functools import reduce
 import hashlib
 import math
+import re
 from math import factorial
-from random import randint
 
 
 def index(array, n):
@@ -740,8 +741,99 @@ def generate_hashtag(s):
                   filter(lambda x: x != "", s.split(" "))))
     return "#"+"".join(s_list) if len("".join(s_list)) < 140 else False
 
+
+def is_prime(n):
+    if n == 1:
+        return False
+    i = 2
+    while i*i <= n:
+        if n % i == 0:
+            return False
+        i += 1
+    return True
+
+
+def prime(n):
+    return [i for i in range(2, n+1) if is_prime(i) == True]
+
+
+def luck_check(string):
+    str_list = list(string)
+    if len(list(filter(lambda x: x.isalpha(), string))) > 0: raise ("")
+    if len(string) % 2 != 0:
+        str_list.remove(str_list[int((len(string)-1)/2)])
+    try:
+        return sum(list(map(lambda x: int(x), str_list[:int((len(str_list)+1)/2)]))) == sum(list(map(lambda x: int(x), str_list[int((len(str_list)+1)/2):])))
+    except:
+        raise ("")
+
+
+def variance(numbers):
+    mean = sum(numbers)/len(numbers)
+    return sum(list(map(lambda x: math.pow(x-mean, 2), numbers)))/len(numbers)
+
+
+def convert_fracts(lst):
+    if lst == []:
+        return []
+    lcm = reduce(lambda x, y: math.lcm(x, y), list(map(lambda x: x[1], lst)))
+    return list(map(lambda x: [int(lcm/x[1])*x[0], lcm], lst))
+
+
+def greatest_product(n):
+    return max(list(map(lambda x: reduce(lambda a, b: a*b, list(map(lambda y: int(y), n[x:x+5]))), range(len(n)-4))))
+
+
+def all_squared_pairs(n):
+    result = []
+    for a in range(0, int(n**0.5)+1):
+        b = (n-a**2)**0.5
+        if int(b) == b:
+            if result.count([b, a]) == 0:
+                result.append([a, b])
+            else:
+                break
+    return result
+
+
+def hex_to_base64(hex: str) -> str:
+    return codecs.encode(codecs.decode(hex, 'hex'), 'base64').decode().replace("\n", "")
+
+
+def is_mac_48_address(address):
+    pattern = "^(?:[0-9A-Fa-f]{2}[:-]){5}(?:[0-9A-Fa-f]{2})$"
+    return re.match(pattern, address) != None
+
+
+def factors(n: int) -> list[int]:
+    result = []
+    i = 1
+    while i*i <= n:
+        if n % i == 0:
+            result.append(i)
+            if n//i != i:
+                result.append(n//i)
+        i += 1
+    return result
+
+
+def oddity(n):
+    return "odd" if len(factors(n)) % 2 != 0 else "even"
+
+
+def find_longest(arr):
+    for num in arr:
+        if len(str(num)) == max(list(map(lambda x: len(str(x)), arr))):
+            return num
+
+
+def reverse_alternate(s):
+    s_list = list(filter(lambda x: x, s.split(" ")))
+    return " ".join(list(map(lambda x: s_list[x] if x % 2 == 0 else "".join(list(reversed(s_list[x]))), range(len(s_list)))))
+
+
 def main():
-    print(generate_hashtag('codewars  is  nice'))
+    print()
 
 
 if __name__ == "__main__":
