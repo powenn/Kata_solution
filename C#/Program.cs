@@ -103,8 +103,24 @@ public class Program
         }
         return String.Concat(result).Replace("*", "#");
     }
+
+    public static int MinPermutation(int n)
+    {
+        bool postive = n > 0;
+        int[] arr = Math.Abs(n).ToString().Select(e => int.Parse(e.ToString())).ToArray();
+        Array.Sort(arr);
+        int index = 0;
+        while (arr[0] == 0 && n != 0)
+        {
+            index++;
+            int temp = arr[0];
+            arr[0] = arr[index];
+            arr[index] = temp;
+        }
+        return int.Parse(String.Concat(arr.Select(e => e.ToString()))) * (postive ? 1 : -1);
+    }
+
     public static void Main()
     {
-        Console.WriteLine(Assemble(new string[] { "*ashtag ** *", "h*sht*g *> *", "has*tag -* *" })); // "hashtag -> #"
     }
 }
