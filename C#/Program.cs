@@ -120,7 +120,214 @@ public class Program
         return int.Parse(String.Concat(arr.Select(e => e.ToString()))) * (postive ? 1 : -1);
     }
 
+
+    public static string RemoveParentheses(string s)
+    {
+        List<string> parenthesesArr = new List<string>();
+        string result = "";
+        for (int i = 0; i < s.Length; i++)
+        {
+            if (s.ElementAt(i).Equals('('))
+            {
+                parenthesesArr.Add("(");
+            }
+            if (s.ElementAt(i).Equals(')'))
+            {
+                parenthesesArr.Remove("(");
+                continue;
+            }
+            if (parenthesesArr.Count() == 0)
+            {
+                result += s[i];
+            }
+            Console.WriteLine(parenthesesArr.Count());
+        }
+        return result;
+    }
+    public static string ParseIPv6(string iPv6)
+    {
+        string separator = iPv6[4].ToString();
+        return String.Concat(iPv6.Split(separator).Select(e => e.Select(f => int.Parse(f.ToString(), System.Globalization.NumberStyles.HexNumber)).Sum().ToString()).ToList());
+    }
+
+    public static int[] SortArray(int[] array)
+    {
+        List<int> evenList = new List<int>();
+        List<int> indexList = new List<int>();
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (array[i] % 2 != 0)
+            {
+                evenList.Add(array[i]);
+                indexList.Add(i);
+            }
+        }
+        evenList.Sort();
+        for (int i = 0; i < indexList.Count(); i++)
+        {
+            array[indexList[i]] = evenList[i];
+        }
+        return array;
+    }
+
+
+    public static string GreekL33t(string str)
+    {
+        Dictionary<string, string> dict = new Dictionary<string, string>(){
+            {"A","α"},{"B","β"},{"D","δ"},{"E","ε"},
+            {"I","ι"},{"K","κ"},{"N","η"},{"O","θ"},
+            {"P","ρ"},{"R","π"},{"T","τ"},{"U","μ"},
+            {"V","υ"},{"W","ω"},{"X","χ"},{"Y","γ"},
+        };
+        return String.Concat(str.ToUpper().Select(e => dict.ContainsKey(e.ToString()) ? dict[e.ToString()] : e.ToString().ToLower()));
+    }
+
+    public static string TitleCase(string title, string minorWords = "")
+    {
+        List<string> titleList = title.Split(" ").ToList().Select(e => e.ToLower()).ToList();
+        List<string> minorList = (minorWords == "" || minorWords == null) ? new List<string>() : minorWords.Split(" ").ToList().Select(e => e.ToLower()).ToList();
+        for (int i = 0; i < titleList.Count(); i++)
+        {
+            if (i == 0)
+            {
+                titleList[i] = toCapitalize(titleList[i]);
+            }
+            if (i != 0 && !minorList.Contains(titleList[i]))
+            {
+                titleList[i] = toCapitalize(titleList[i]);
+            }
+        }
+        return String.Join(" ", titleList);
+    }
+
+    public static string toCapitalize(string s)
+    {
+        return s.Length <= 1 ? s.ToUpper() : s.ElementAt(0).ToString().ToUpper() + s.Substring(1).ToLower();
+    }
+
+    public static bool IsAlt(string word)
+    {
+        bool firstCharIsVowel = "aeiou".Contains(word.ElementAt(0));
+        if (firstCharIsVowel)
+        {
+            for (int i = 1; i < word.Length; i++)
+            {
+                if (i % 2 != 0 && "aeiou".Contains(word.ElementAt(i)))
+                {
+                    return false;
+                }
+                if (i % 2 == 0 && !"aeiou".Contains(word.ElementAt(i)))
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 1; i < word.Length; i++)
+            {
+                if (i % 2 != 0 && !"aeiou".Contains(word.ElementAt(i)))
+                {
+                    return false;
+                }
+                if (i % 2 == 0 && "aeiou".Contains(word.ElementAt(i)))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static List<char> Remember(string str)
+    {
+        HashSet<char> charSet = new HashSet<char>();
+        List<char> result = new List<char>();
+        foreach (char c in str)
+        {
+            if (!charSet.Contains(c))
+            {
+                charSet.Add(c);
+                continue;
+            }
+            if (charSet.Contains(c) && !result.Contains(c))
+            {
+                result.Add(c);
+            }
+        }
+        return result;
+    }
+
+    public static int SquareDigitsSequence(int a0)
+    {
+        List<int> numList = new List<int>() { a0 };
+        while (true)
+        {
+            if (numList.Last() == 1)
+            {
+                numList.Add(1);
+                break;
+            }
+            int newNum = numList.Last().ToString().Select(e => int.Parse(e.ToString()) * int.Parse(e.ToString())).Sum();
+            numList.Add(newNum);
+            if (newNum == a0) break;
+        }
+        return numList.Count();
+    }
+    public static int pointsNumber(int radius)
+    {
+        int count = 0;
+        for (int i = -radius; i <= radius; i++)
+        {
+            for (int j = -radius; j <= radius; j++)
+            {
+                if (i * i + j * j <= radius * radius)
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public static int Score(int[] dice)
+    {
+        Dictionary<int, int> dict = new Dictionary<int, int>();
+        int sum = 0;
+        foreach (int i in dice.ToHashSet())
+        {
+            dict.Add(i, dice.Where(e => e == i).Count());
+        }
+        foreach (int key in dict.Keys)
+        {
+            switch (key)
+            {
+                case 1:
+                    sum += dict[key] >= 3 ? 1000 + (dict[key] - 3) * 100 : dict[key] * 100;
+                    break;
+                case 2:
+                    sum += dict[key] >= 3 ? 200 : 0;
+                    break;
+                case 3:
+                    sum += dict[key] >= 3 ? 300 : 0;
+                    break;
+                case 4:
+                    sum += dict[key] >= 3 ? 400 : 0;
+                    break;
+                case 5:
+                    sum += dict[key] >= 3 ? 500 + (dict[key] - 3) * 50 : dict[key] * 50;
+                    break;
+                case 6:
+                    sum += dict[key] >= 3 ? 600 : 0;
+                    break;
+                default:
+                    break;
+            }
+        }
+        return sum;
+    }
     public static void Main()
     {
+        Console.WriteLine();
     }
 }
