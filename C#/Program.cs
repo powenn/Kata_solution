@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Numerics;
 
 public class Program
 {
@@ -326,6 +327,136 @@ public class Program
         }
         return sum;
     }
+
+    public static string Shortcut(string input)
+    {
+        return String.Join("", input.Select(e => "aeiouAEIOU".Contains(e) ? "" : e.ToString()));
+    }
+
+    public static int[,] MatrixMultiplication(int[,] a, int[,] b)
+    {
+        int size = (int)Math.Sqrt(a.Length);
+        int[,] result = new int[size, size];
+        for (int i = 0; i < size; i++)
+        {
+            for (int j = 0; j < size; j++)
+            {
+                for (int k = 0; k < size; k++)
+                {
+                    result[i, j] += a[i, k] * b[k, j];
+                }
+            }
+        }
+        return result;
+    }
+
+    class Sudoku
+    {
+        int rowSize;
+        int columnSize;
+        int[][] arr = new int[][] { };
+
+        public Sudoku(int[][] sudokuData)
+        {
+            this.rowSize = sudokuData.Select(e => e.Length).Max();
+            this.columnSize = sudokuData.Count();
+            this.arr = new int[columnSize][];
+            for (int i = 0; i < columnSize; i++)
+            {
+                arr[i] = sudokuData[i];
+            }
+        }
+
+        private bool littleSquaresIsValid(int x, int y, int pad)
+        {
+            List<int> list = new List<int>();
+            for (int i = x; i < x + pad; i++)
+            {
+                for (int j = y; j < y + pad; j++)
+                {
+                    list.Add(arr[i][j]);
+                }
+            }
+            return list.ToHashSet().SetEquals(Enumerable.Range(1, rowSize).ToHashSet());
+        }
+
+        public bool IsValid()
+        {
+            int pad;
+            if (columnSize != rowSize)
+            {
+                return false;
+            }
+            else
+            {
+                pad = (int)Math.Sqrt(columnSize);
+            }
+            for (int i = 0; i < columnSize; i++)
+            {
+                if (arr[i].Length != rowSize)
+                {
+                    return false;
+                }
+                if (!arr[i].ToHashSet().SetEquals(Enumerable.Range(1, rowSize).ToHashSet()))
+                {
+                    return false;
+                }
+                if (!Enumerable.Range(0, rowSize).Select(e => arr[e][i]).ToHashSet().SetEquals(Enumerable.Range(1, rowSize).ToHashSet()))
+                {
+                    return false;
+                }
+            }
+            for (int i = 0; i < rowSize; i += pad)
+            {
+                for (int j = 0; j < rowSize; j += pad)
+                {
+                    if (!littleSquaresIsValid(i, j, pad))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
+    public class Sudoku2
+    {
+        public static bool ValidateSolution(int[][] board)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                if (!board[i].ToHashSet().SetEquals(Enumerable.Range(1, 9).ToHashSet()))
+                {
+                    return false;
+                }
+                if (!Enumerable.Range(0, 9).Select(e => board[e][i]).ToHashSet().SetEquals(Enumerable.Range(1, 9).ToHashSet()))
+                {
+                    return false;
+                }
+            }
+            for (int i = 0; i < 9; i += 3)
+            {
+                for (int j = 0; j < 9; j += 3)
+                {
+                    List<int> list = new List<int>();
+                    for (int k = i; k < i + 3; k++)
+                    {
+                        for (int l = j; l < j + 3; l++)
+                        {
+                            list.Add(board[k][l]);
+                        }
+                    }
+                    if (!list.ToHashSet().SetEquals(Enumerable.Range(1, 9).ToHashSet()))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+
     public static void Main()
     {
         Console.WriteLine();
