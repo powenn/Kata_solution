@@ -457,8 +457,130 @@ public class Program
         }
     }
 
+    public class SnailSolution
+    {
+        enum Direction
+        {
+            right,
+            down,
+            left,
+            up
+        }
+
+        public static int[] Snail(int[][] array)
+        {
+            int len = array.Count();
+            List<int[]> indexs = new List<int[]>();
+            Direction d = Direction.right;
+            List<int> result = new List<int>();
+            int x = 0;
+            int y = 0;
+            if (array.Length == 0 || array[0].Length == 0)
+            {
+                return result.ToArray();
+            }
+            void add()
+            {
+                indexs.Add(new int[] { x, y });
+                result.Add(array[x][y]);
+            }
+
+            void moveRight()
+            {
+                add();
+                y++;
+            }
+
+            void moveDown()
+            {
+                add();
+                x++;
+            }
+
+            void moveLeft()
+            {
+                add();
+                y--;
+            }
+
+            void moveUp()
+            {
+                add();
+                x--;
+            }
+
+            while (result.Count() < len * len)
+            {
+                switch (d)
+                {
+                    case Direction.right:
+                        if (indexs.Where(e => e.SequenceEqual(new int[] { x, y + 1 })).Count() != 0 || y + 1 >= len)
+                        {
+                            d = Direction.down;
+                            moveDown();
+                        }
+                        else
+                        {
+                            moveRight();
+                        }
+                        break;
+                    case Direction.down:
+                        if (indexs.Where(e => e.SequenceEqual(new int[] { x + 1, y })).Count() != 0 || x + 1 >= len)
+                        {
+                            d = Direction.left;
+                            moveLeft();
+                        }
+                        else
+                        {
+                            moveDown();
+                        }
+                        break;
+                    case Direction.left:
+                        if (indexs.Where(e => e.SequenceEqual(new int[] { x, y - 1 })).Count() != 0 || y - 1 < 0)
+                        {
+                            d = Direction.up;
+                            moveUp();
+                        }
+                        else
+                        {
+                            moveLeft();
+                        }
+                        break;
+                    case Direction.up:
+                        if (indexs.Where(e => e.SequenceEqual(new int[] { x - 1, y })).Count() != 0 || x - 1 < 0)
+                        {
+                            d = Direction.right;
+                            moveRight();
+                        }
+                        else
+                        {
+                            moveUp();
+                        }
+                        break;
+                }
+            }
+            Console.WriteLine(String.Join(" ", result));
+            return result.ToArray();
+        }
+    }
+
     public static void Main()
     {
-        Console.WriteLine();
+        int[][] array =
+       {
+           new []{1, 2, 3},
+           new []{4, 5, 6},
+           new []{7, 8, 9}
+       };
+        int[][] array2 =
+        {
+           new []{1, 2, 3,4},
+           new []{5, 6, 7,8},
+           new []{9,10,11,12},
+           new []{13,14,15,16}
+       };
+        Console.WriteLine(SnailSolution.Snail(array));
+        Console.WriteLine(SnailSolution.Snail(array2));
+        Console.WriteLine(SnailSolution.Snail(new int[][] { }));
     }
 }
