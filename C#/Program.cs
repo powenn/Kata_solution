@@ -564,23 +564,25 @@ public class Program
         }
     }
 
+    public class Pattern16
+    {
+        public static string Pattern(int n)
+        {
+            if (n < 1)
+            {
+                return "";
+            }
+            List<string> layers = new List<string>();
+            for (int i = n; i > 0; i--)
+            {
+                layers.Add(String.Join("", Enumerable.Range(i + 1, n - i).Select(e => e % 10 + "").Reverse().ToList()) + String.Join("", Enumerable.Range(1, i).Select(e => i % 10 + "").ToList()));
+            }
+            return String.Join("\n", layers);
+        }
+    }
+
     public static void Main()
     {
-        int[][] array =
-       {
-           new []{1, 2, 3},
-           new []{4, 5, 6},
-           new []{7, 8, 9}
-       };
-        int[][] array2 =
-        {
-           new []{1, 2, 3,4},
-           new []{5, 6, 7,8},
-           new []{9,10,11,12},
-           new []{13,14,15,16}
-       };
-        Console.WriteLine(SnailSolution.Snail(array));
-        Console.WriteLine(SnailSolution.Snail(array2));
-        Console.WriteLine(SnailSolution.Snail(new int[][] { }));
+        Console.WriteLine(Pattern16.Pattern(17));
     }
 }
