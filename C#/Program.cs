@@ -581,8 +581,67 @@ public class Program
         }
     }
 
+    public static long CountZeroes(int n)
+    {
+        return n <= 0 ? 0 : Enumerable.Range(1, n).Select(e => (e - 1) * ((long)(9 * Math.Pow(10, e - 2)))).Sum();
+    }
+
+    // public class ItemCounter<T>
+    // {
+    //     private readonly Dictionary<T, int> _itemCounts = new Dictionary<T, int>();
+
+    //     public int DistinctItems
+    //     {
+    //         get { return _itemCounts.Count(); }
+    //     }
+
+    //     public int GetCount(T item)
+    //     {
+    //         if (item == null)
+    //         {
+    //             throw new ArgumentNullException();
+    //         }
+    //         if (!HasItem(item))
+    //         {
+    //             throw new InvalidOperationException();
+    //         }
+    //         return _itemCounts.GetValueOrDefault(item);
+    //     }
+
+    //     public bool HasItem(T item)
+    //     {
+    //         return _itemCounts.ContainsKey(item);
+    //     }
+
+
+    //     public ItemCounter(T[] items)
+    //     {
+    //         if (items == null)
+    //         {
+    //             throw new ArgumentNullException();
+    //         }
+    //         foreach (var item in items.ToHashSet())
+    //         {
+    //             _itemCounts.Add(item, items.Where(e => e!.Equals(item)).Count());
+    //         }
+    //     }
+    // }
+
+    public static string[] WordsToHex(string words)
+    {
+        string[] wordsArr = words.Split(" ").Select(e => e.PadRight(3)).ToArray();
+        string[] result = new string[wordsArr.Length];
+        Console.WriteLine(String.Join("-", wordsArr));
+        for (int i = 0; i < wordsArr.Length; i++)
+        {
+            result[i] = "#" + String.Join("", wordsArr[i].Substring(0, 3).Select(e => e == ' ' ? "00" : Convert.ToHexString(new byte[] { ((byte)e) })).ToArray()).ToLower();
+        }
+        Console.WriteLine(String.Join("-", result));
+        return result;
+    }
+
     public static void Main()
     {
-        Console.WriteLine(Pattern16.Pattern(17));
+        Console.WriteLine();
     }
 }
