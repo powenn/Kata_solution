@@ -631,17 +631,152 @@ public class Program
     {
         string[] wordsArr = words.Split(" ").Select(e => e.PadRight(3)).ToArray();
         string[] result = new string[wordsArr.Length];
-        Console.WriteLine(String.Join("-", wordsArr));
         for (int i = 0; i < wordsArr.Length; i++)
         {
             result[i] = "#" + String.Join("", wordsArr[i].Substring(0, 3).Select(e => e == ' ' ? "00" : Convert.ToHexString(new byte[] { ((byte)e) })).ToArray()).ToLower();
         }
-        Console.WriteLine(String.Join("-", result));
+        return result;
+    }
+
+    public static string ZeroFill(int number, int size)
+    {
+        return Math.Abs(number).ToString().PadLeft(size, '0');
+    }
+
+    public static int MatrixElementsSum(int[][] matrix)
+    {
+        int sum = 0;
+        for (int i = 0; i < matrix.Count(); i++)
+        {
+            for (int j = 0; j < matrix[i].Count(); j++)
+            {
+                if (matrix[i][j] != 0 && matrix[i - 1 >= 0 ? i - 1 : i][j] != 0)
+                {
+                    sum += matrix[i][j];
+                }
+                else
+                {
+                    if (i + 1 < matrix.Count())
+                    {
+                        matrix[i + 1][j] = 0;
+                    }
+                }
+            }
+        }
+        return sum;
+    }
+
+
+    public class WeightSort
+    {
+        public static string orderWeight(string strng)
+        {
+            if (strng == "")
+            {
+                return strng;
+            }
+            long[] weightArr = strng.Split(" ").Select(e => ((long)Int64.Parse(e))).ToArray();
+            var pair = new List<Tuple<long, long>>();
+            LinkedList<long> result = new LinkedList<long>();
+            foreach (var item in weightArr)
+            {
+                pair.Add(new Tuple<long, long>(item, item.ToString().Select(e => ((long)Int64.Parse(e.ToString()))).Sum()));
+            }
+            while (pair.Count() > 0)
+            {
+                long value = pair.MinBy(p => p.Item2)!.Item2!;
+                var filtered = pair.Where(p => p.Item2 == value).ToList();
+                long minValue = filtered.MinBy(e => e.Item1.ToString())!.Item1;
+                result.AddLast(minValue);
+                pair.RemoveAt(pair.IndexOf(new Tuple<long, long>(minValue, value)));
+
+            }
+            return String.Join(" ", result);
+        }
+    }
+
+    public class DirReduction
+    {
+        private static void dirCheck(LinkedList<string> list, string dir, string dirToCheck)
+        {
+            if (!list.Last().Equals(dirToCheck))
+            {
+                list.AddLast(dir);
+            }
+            else
+            {
+                list.RemoveLast();
+            }
+        }
+        public static string[] dirReduc(String[] arr)
+        {
+            var result = new LinkedList<string>();
+            foreach (var item in arr)
+            {
+                if (result.Count() != 0)
+                {
+                    switch (item)
+                    {
+                        case "EAST":
+                            dirCheck(result, item, "WEST");
+                            break;
+                        case "WEST":
+                            dirCheck(result, item, "EAST");
+                            break;
+                        case "NORTH":
+                            dirCheck(result, item, "SOUTH");
+                            break;
+                        case "SOUTH":
+                            dirCheck(result, item, "NORTH");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    result.AddLast(item);
+                }
+            }
+            return result.ToArray();
+        }
+    }
+
+
+    public class PiApprox
+    {
+        public static System.Collections.ArrayList iterPi(double epsilon)
+        {
+            int count = 0;
+            double myPI = 0d;
+            double tmpForMyPI = 0d;
+            while (Math.Abs(Math.PI - myPI) >= epsilon)
+            {
+                tmpForMyPI += (1d / (++count * 2 - 1)) * (count % 2 == 0 ? -1 : 1);
+                myPI = tmpForMyPI * 4;
+            }
+            return new System.Collections.ArrayList() { count, Math.Round(tmpForMyPI * 4, 10) };
+        }
+    }
+
+    public static string Cipher26(string message)
+    {
+        int sum = 0;
+        int code;
+        int value;
+        string result = "";
+        for (int i = 0; i < message.Length; i++)
+        {
+            code = (int)message[i] - 97;
+            value = (26 * (sum / 26 + 1) - sum + code) % 26;
+            result += (char)(value + 97);
+            sum += (value % 26);
+        }
         return result;
     }
 
     public static void Main()
     {
-        Console.WriteLine();
+        Console.WriteLine(Cipher26("taiaiaertkixquxjnfxxdh")); //thisisencryptedmessage
     }
 }
