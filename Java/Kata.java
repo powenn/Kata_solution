@@ -660,8 +660,20 @@ public class Kata {
         return "Nothing";
     }
 
+    public static int[][] matrixAddition(int[][] a, int[][] b) {
+        int size = a.length;
+        int[][] newArray = new int[size][size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                newArray[i][j] = a[i][j] + b[i][j];
+            }
+            System.out.println(Arrays.toString(newArray[i]));
+        }
+        return newArray;
+    }
 
     public static void main(String[] args) {
-        System.out.println();
+        System.out.println(matrixAddition(new int[][] { { 1, 2, 3 }, { 3, 2, 1 }, { 1, 1, 1 } },
+                new int[][] { { 2, 2, 1 }, { 3, 2, 3 }, { 1, 1, 3 } }));
     }
 }

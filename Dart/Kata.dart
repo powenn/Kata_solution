@@ -1,4 +1,5 @@
 import "dart:core";
+import 'dart:math';
 
 List<int> maps(List<int> arr) => arr.map((e) => e *= 2).toList();
 
@@ -141,18 +142,18 @@ List solve(arr) {
   return [];
 }
 
-int solution(int n) {
-  List<int> result = [];
-  if (n > 0) {
-    for (int i = 0; i < n; i++) {
-      if (i % 3 == 0 || i % 5 == 0) {
-        result.add(i);
-      }
-    }
-    return result.reduce((a, b) => a + b);
-  }
-  return 0;
-}
+// int solution(int n) {
+//   List<int> result = [];
+//   if (n > 0) {
+//     for (int i = 0; i < n; i++) {
+//       if (i % 3 == 0 || i % 5 == 0) {
+//         result.add(i);
+//       }
+//     }
+//     return result.reduce((a, b) => a + b);
+//   }
+//   return 0;
+// }
 
 String addLetters(List<String> letters) {
   if (letters.isEmpty) {
@@ -169,7 +170,37 @@ String addLetters(List<String> letters) {
       : String.fromCharCode(value + 96);
 }
 
+String evenOrOdd(int number) => number % 2 == 0 ? "Even" : "Odd";
+
+String createPhoneNumber(List numbers) =>
+    "(${numbers.getRange(0, 3).join()}) ${numbers.getRange(3, 6).join()}-${numbers.getRange(6, 10).join()}";
+
+String numberToString(int n) => "$n";
+
+String bool_to_word(bool boolean) => boolean ? "Yes" : "No";
+
+String solution(str) => str.toString().split("").reversed.join();
+
+num makeNegative(n) => -(n.abs());
+
+bool isSquare(n) {
+  if (n < 0) {
+    return false;
+  } else {
+    return sqrt(n).toInt().compareTo(sqrt(n)) == 0;
+  }
+}
+
+int positiveSum(List<int> arr) => arr.where((e) => e > 0).isEmpty
+    ? 0
+    : arr.where((e) => e > 0).reduce((a, b) => a + b);
+
+String repeatString(int n, String s) => s * n;
+
+bool XO(str) =>
+    str.toLowerCase().split("").where((e) => e == "o").length ==
+    str.toLowerCase().split("").where((e) => e == "x").length;
+
 void main(List<String> args) {
-  print(addLetters(['a', 'b', 'c']));
-  print(addLetters(['z']));
+  print(XO("xO"));
 }

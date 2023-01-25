@@ -270,60 +270,12 @@ func get_minimal_fraction(fraction:(Int,Int)) -> (Int,Int) {
     return (new_fraction.0,new_fraction.1)
 }
 
-func convertFracts(_ l: [(Int, Int)]) -> [(Int, Int)] {
-    var dir:[Int:Int] = [:]
-    var LCM:Decimal = 1
-    let fract_kprime_list:[[Int]] = l.map({get_kprime_num_list(of: $0.1)})
-    var result:[(Int,Int)] = []
-    fract_kprime_list.flatMap({$0}).forEach({num in
-        if dir[num] == nil {dir[num] = 1}
-    })
-    for num in dir.keys {
-        fract_kprime_list.forEach({arr in
-            if arr.filter({$0 == num}).count > dir[num]! {dir[num] = arr.filter({$0 == num}).count}
-        })
-    }
-    dir.forEach({pair in
-        LCM *= pow(Decimal(pair.key), pair.value)
-    })
-    l.forEach({fract in
-        result.append((fract.0 * (Int(LCM.description)!/fract.1),Int(LCM.description)!))
-    })
-    print(dir)
-    return result
-}
-
-
 class Solution {
     static func twosum(numbers: [Double], target: Double) -> [Int] {
         let filtered_list = numbers.map({$0}).filter({numbers.contains(target-$0)})
         return [numbers.firstIndex(of: filtered_list.first!)!,numbers.lastIndex(of: filtered_list.last!)!]
     }
 }
-
-func swap(_ s: String, n: Int) -> String {
-    var s_arr = s.compactMap({$0})
-    var bin_arr = Array(String(n,radix: 2))
-    var index = 0
-    while bin_arr.count < s.filter({$0.isLetter}).count {bin_arr+=bin_arr}
-    s_arr.forEach({char in
-        if char.isLetter {
-            if bin_arr[index] == "1" {
-                s_arr[index] = char.isLowercase ? Character(char.uppercased()) : Character(char.lowercased())
-            } else {
-                s_arr[index] = Character(char.description)
-            }
-        } else {
-            s_arr[index] = Character(char.description)
-            bin_arr.insert("x", at: index-1)
-        }
-        index+=1
-    })
-    return String(s_arr)
-}
-
-//print(swap("Hello world!", n: 11)) // "heLLO wORLd!"
-//print(swap("gOOd MOrniNg", n: 7864)) // "GooD MorNIng"
 
 func longestRepetition(_ s: String) -> [String: Int]{
     if s.isEmpty {return ["":0]}
@@ -467,11 +419,11 @@ func perimeter(_ n: UInt64) -> UInt64 {
     return 4*(arr.reduce(0, +))
 }
 
-//extension Int {
-//    func isPrime() -> Bool {
-//        return self > 0 ? factors(of: self).count == 2 : false
-//    }
-//}
+extension Int {
+    func isPrime() -> Bool {
+        return self > 0 ? factors(of: self).count == 2 : false
+    }
+}
 
 func getPrimes(from start: Int, to end: Int) -> [Int] {
     var arr:[Int] = []
@@ -485,3 +437,47 @@ func getPrimes(from start: Int, to end: Int) -> [Int] {
     return arr
 }
 
+func isAValidMessage(_ message: String) -> Bool {
+    if message.isEmpty {return true}
+    if !message.first!.isNumber {return false}
+    var num_arr:[String] = []
+    Array(message).map({!$0.isNumber ? " ":$0}).split(separator: " ").forEach({slice in
+        num_arr.append(String(slice.compactMap({$0})))
+    })
+    var new_message = message
+    num_arr.forEach({num in
+        new_message = new_message.replacingOccurrences(of: num, with: " ")
+    })
+    return num_arr.elementsEqual(new_message.split(separator: " ").map({String($0.count)}))
+}
+
+func comp(_ a: [Int], _ b: [Int]) -> Bool {
+    let new_a:Set = Set(a)
+    let new_b:Set = Set(b.map({$0.isPrime()==false ? Int(sqrt(Double($0))):$0}))
+    print(new_a,new_b)
+    return new_a==new_b
+}
+
+func solution(_ num: Int) -> Int {
+    return num == 0 ? 0 : Array(3..<num).filter({$0%3==0 || $0%5==0}).reduce(0, {$0+$1})
+}
+
+
+
+func areaOfPolygonInsideCircle(_ circleRadius: Double, _ numberOfSides: Int) -> Double {
+    let PI = Double.pi
+    var area = Double(numberOfSides)*pow(circleRadius, 2)*sin(PI*2/Double(numberOfSides))/2
+    return Double(Int((area*1000).rounded()))/1000.0
+}
+
+func digPow(for number: Int, using power: Int) -> Int {
+    var arr = Array(number.description.map({Int($0.description)!}))
+    print(arr)
+    return 0
+}
+
+func maxBall(_ v0: Int) -> Int {
+    return Int(round(Double(v0)/9.81/3.6*10))
+}
+
+print(maxBall(15))

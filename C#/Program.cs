@@ -775,8 +775,53 @@ public class Program
         return result;
     }
 
+    public static string Factorial(int n)
+    {
+        List<int> res = new List<int>() { 1 };
+        for (int x = 2; x <= n; x++)
+        {
+            int carry = 0;
+            for (int i = 0; i < res.Count(); i++)
+            {
+                int prod = res[i] * x + carry;
+                res[i] = prod % 10;
+                carry = prod / 10;
+            }
+            while (carry != 0)
+            {
+                res.Add(carry % 10);
+                carry = carry / 10;
+            }
+        }
+        res.Reverse();
+        return String.Join("", res);
+    }
+
+    public class VolTank
+    {
+        public static int TankVol(int h, int d, int vt)
+        {
+            double r = d / 2d;
+            double len = vt / (r * r * Math.PI);
+            double degree = Math.Acos((h >= r ? h - r : r - h) / r) * (180d / Math.PI) * 2d;
+            double radian = (degree * (Math.PI)) / 180;
+            return (int)((r * r * Math.PI * ((h <= r ? degree : 360 - degree) / 360) - (h <= r ? 1 : -1) * r * r * Math.Sin(radian) / 2) * len);
+        }
+    }
+    public static int SearchArray(object[][] arrayToSearch, object[] query)
+    {
+        if (arrayToSearch.Where(a => a is not Array).Count() != 0) throw new Exception();
+        if (arrayToSearch.Where(a => a.Length != 2).Count() != 0) throw new Exception();
+        if (query.Length != 2) throw new Exception();
+        for (int i = 0; i < arrayToSearch.Count(); i++)
+        {
+            if (arrayToSearch[i].SequenceEqual(query)) return i;
+        }
+        return -1;
+    }
+
     public static void Main()
     {
-        Console.WriteLine(Cipher26("taiaiaertkixquxjnfxxdh")); //thisisencryptedmessage
+        Console.WriteLine();
     }
 }

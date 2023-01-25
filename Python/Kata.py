@@ -832,6 +832,59 @@ def reverse_alternate(s):
     return " ".join(list(map(lambda x: s_list[x] if x % 2 == 0 else "".join(list(reversed(s_list[x]))), range(len(s_list)))))
 
 
+def average_string(s):
+    value_dict = {"zero": 0, "one": 1, "two": 2, "three": 3, "four": 4,
+                  "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9}
+    if s == "" or len(list(filter(lambda x: x not in value_dict.keys(), s.split(" ")))) != 0:
+        return "n/a"
+    return list(value_dict)[int(sum(list(map(lambda x:value_dict[x], s.split(" ")))) / len(s.split(" ")))]
+
+
+def amount_of_pages(summary):
+    page = 1
+    count = 0
+    while count < summary:
+        count += len(str(page))
+        page += 1
+    return page-1
+
+
+def power_mod(x, y, n):
+    if n == 1:
+        return 0
+    r = 1
+    x %= n
+    while y > 0:
+        if y % 2 == 1:
+            r = r*x % n
+        y >>= 1
+        x = x**2 % n
+    return r
+
+
+def transpose(matrix):
+    result = []
+    for i in range(len(matrix[0])):
+        result += [[m[i] for m in matrix]]
+    return result
+
+
+def encode(dimensions: list[int], point: list[int]) -> int:
+    num = 0
+    for i in range(len(dimensions)-1):
+        num += point[i]*reduce(lambda x, y: x*y, dimensions[i+1:])
+    return num+point[len(point)-1]
+
+
+def decode(dimensions: list[int], encoded_point: int) -> list[int]:
+    result = []
+    for i in range(1, len(dimensions)):
+        result.append(encoded_point //
+                      reduce(lambda x, y: x*y, dimensions[i:]))
+        encoded_point %= reduce(lambda x, y: x*y, dimensions[i:])
+    result.append(encoded_point)
+    return result
+
 def main():
     print()
 
