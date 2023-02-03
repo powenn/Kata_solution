@@ -201,6 +201,40 @@ bool XO(str) =>
     str.toLowerCase().split("").where((e) => e == "o").length ==
     str.toLowerCase().split("").where((e) => e == "x").length;
 
+String toCapitalize(String s) {
+  return s.length > 1
+      ? s[0].toUpperCase() + s.substring(1).toLowerCase()
+      : s.toUpperCase();
+}
+
+String accum(String str) {
+  return [for (int i = 0; i < str.length; i += 1) i]
+      .map((e) => toCapitalize(str[e] * (e + 1)))
+      .join(("-"));
+}
+
+int duplicateCount(String text) {
+  Map count = {};
+  text.toLowerCase().split("").toList().forEach((e) {
+    count.containsKey(e) ? count[e]++ : count[e] = 1;
+  });
+  return count.values.where((e) => e >= 2).length;
+}
+
+List<dynamic> iterPi(double epsilon) {
+  int count = 0;
+  double myPi = 0;
+  double tmpForMyPi = 0;
+  while ((pi - myPi).abs() >= epsilon) {
+    tmpForMyPi += (1 / (++count * 2 - 1)) * (count % 2 == 0 ? -1 : 1);
+    myPi = tmpForMyPi * 4;
+  }
+  return [count, myPi.toStringAsFixed(10)];
+}
+
+int fcn(int n) => pow(2, n).toInt();
+
 void main(List<String> args) {
-  print(XO("xO"));
+  print(fcn(10));
+  print(fcn(17)); //17, 131072
 }
