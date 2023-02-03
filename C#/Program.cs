@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Numerics;
+using Interval = System.ValueTuple<int, int>;
 
 public class Program
 {
@@ -820,8 +821,87 @@ public class Program
         return -1;
     }
 
+    public static int[] MoveZeroes(int[] arr)
+    {
+        return arr.Where(e => e != 0).Concat(Enumerable.Repeat(0, arr.Where(e => e == 0).Count())).ToArray();
+    }
+
+
+    public class Node
+    {
+        public Node Left;
+        public Node Right;
+        public int Value;
+
+        public Node(Node l, Node r, int v)
+        {
+            Left = l;
+            Right = r;
+            Value = v;
+        }
+    }
+
+    public static List<int> TreeByLevels(Node node)
+    {
+        List<int> result = new List<int>() { };
+        if (node == null) return result;
+        Queue<Node> queue = new Queue<Node>();
+        queue.Enqueue(node);
+        while (queue.Count != 0)
+        {
+            Node tempNode = queue.Dequeue();
+            result.Add(tempNode.Value);
+            if (tempNode.Left != null) queue.Enqueue(tempNode.Left);
+            if (tempNode.Right != null) queue.Enqueue(tempNode.Right);
+        }
+        return result;
+    }
+
+
+    public class User
+    {
+        public int rank;
+        public int progress;
+        public User()
+        {
+            this.rank = Rank[0];
+            this.progress = 0;
+        }
+        List<int> Rank = new List<int>() { -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8 };
+        public void incProgress(int actRank)
+        {
+            if (!Rank.Contains(actRank)) throw new ArgumentException();
+            int diff = Rank.IndexOf(actRank) - Rank.IndexOf(rank);
+            switch (diff)
+            {
+                case <= -2:
+                    break;
+                case -1:
+                    progress++;
+                    break;
+                case 0:
+                    progress += 3;
+                    break;
+                case >= 1:
+                    progress += 10 * diff * diff;
+                    break;
+            }
+            rank = Rank[Rank.IndexOf(rank) + progress / 100];
+            progress = rank == 8 ? 0 : progress % 100;
+        }
+    }
+
     public static void Main()
     {
-        Console.WriteLine();
+        User user = new User();
+        Console.WriteLine(user.rank); // => -8
+        Console.WriteLine(user.progress); // => 0
+        user.incProgress(-7);
+        Console.WriteLine(user.progress); // => 10
+        user.incProgress(-5); // will add 90 progress
+        Console.WriteLine(user.progress); // => 0 // progress is now zero
+        Console.WriteLine(user.rank); // => -7 // rank was upgraded to -7
+        user.incProgress(-8);
+        Console.WriteLine(user.progress);
     }
 }
